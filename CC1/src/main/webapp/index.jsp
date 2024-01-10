@@ -7,29 +7,30 @@
 <body>
 <div class="container">
 
-    <form action="CCServlet" method="post">
+    <form action="cc-servlet" method="post">
         <div>
             <label>Amount to be converted:</label>
             <input type="text" name="currName">
         </div>
         <div class="from-curr">
             <label>From Currency</label>
-            <select name="fromCurrency">
-                <option value="INR">INR</option>
-                <option value="USD">USD</option>
-                <option value="AUD">AUD</option>
-                <!-- Add other currency options as needed -->
-            </select>
+<%--            <select name="fromCurrency">--%>
+<%--                <option value="INR">INR</option>--%>
+<%--                <option value="USD">USD</option>--%>
+<%--                <option value="AUD">AUD</option>--%>
+<%--                <!-- Add other currency options as needed -->--%>
+<%--            </select>--%>
         </div>
         <br>
         <div class="to-curr">
             <label>To Currency</label>
-            <select name="toCurrency">
-                <option value="INR">INR</option>
-                <option value="USD">USD</option>
-                <option value="AUD">AUD</option>
-                <!-- Add other currency options as needed -->
-            </select>
+<%--            <select name="toCurrency">--%>
+<%--                <option value="INR">INR</option>--%>
+<%--                <option value="USD">USD</option>--%>
+<%--                <option value="AUD">AUD</option>--%>
+<%--                <!-- Add other currency options as needed -->--%>
+<%--            </select>--%>
+            <input type="text" name ="toCurrency">
         </div>
 
         <!-- Add a submit button -->
