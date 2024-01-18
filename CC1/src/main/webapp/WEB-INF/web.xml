@@ -3,4 +3,31 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="https://jakarta.ee/xml/ns/jakartaee https://jakarta.ee/xml/ns/jakartaee/web-app_6_0.xsd"
          version="6.0">
+    <display-name>CurrencyConverter</display-name>
+    <welcome-file-list>
+        <welcome-file>index.jsp</welcome-file>
+    </welcome-file-list>
+
+    <servlet>
+        <display-name>CCServlet</display-name>
+        <servlet-name>CCServlet</servlet-name>
+        <servlet-class>com.currency_converter.cc1.CCServlet</servlet-class>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>CCServlet</servlet-name>
+        <url-pattern>/CCServlet</url-pattern>
+    </servlet-mapping>
+
+<!--    <servlet>-->
+<!--        <display-name>WeatherServlet</display-name>-->
+<!--        <servlet-name>WeatherServlet</servlet-name>-->
+<!--        <servlet-class>com.currency_converter.cc1.WeatherServlet</servlet-class>-->
+<!--    </servlet>-->
+
+<!--    <servlet-mapping>-->
+<!--        <servlet-name>WeatherServlet</servlet-name>-->
+<!--        <url-pattern>/WeatherServlet</url-pattern>-->
+<!--    </servlet-mapping>-->
+
 </web-app>

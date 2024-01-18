@@ -1,62 +1,98 @@
 package com.currency_converter.cc1;
 
-import jakarta.json.Json;
-import jakarta.json.JsonObject;
-import jakarta.servlet.annotation.WebServlet;
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
+import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-
-import java.io.*;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+import java.util.Scanner;
+import com.currency_converter.util.DatabaseUtil;
 
-@WebServlet(name = "ccServlet", value = "/cc-servlet")
 public class CCServlet extends HttpServlet {
+    private static final long serialVersionUID = 1L;
 
-    public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        double amountToConvert = Double.parseDouble(request.getParameter("currName"));
+    public CCServlet() {
+        super();
+    }
+
+//    public void init() throws ServletException {
+//        super.init();
+//
+//        // Initialize the database on servlet startup
+//        try (Connection connection = DatabaseUtil.getConnection()) {
+//            DatabaseUtil.executeSqlScript("test/users.sql", connection);
+//        } catch (SQLException | IOException e) {
+//            e.printStackTrace(); // Handle exceptions appropriately
+//        }
+//    }
+
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        response.getWriter().append("Served at: ").append(request.getContextPath());
+    }
+
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        String fromCurrency = request.getParameter("fromCurrency");
         String toCurrency = request.getParameter("toCurrency");
+        double fromValue = Double.parseDouble(request.getParameter("fromValue"));
+
         String apiKey = "fca_live_6YuSWca6tVLASZZpjOrMavJo4EVGg6DT3MMgwRL9"; // Replace with a secure method to obtain the API key
 
-        String apiUrl = "https://api.freecurrencyapi.com/v1/latest?apikey=" + apiKey;
+        String apiUrl = "https://api.freecurrencyapi.com/v1/latest?apikey=" + apiKey + "&currencies=" + fromCurrency + "%2CUSD%2C" + toCurrency;
+        HttpURLConnection connection = null;
 
         try {
-            URL url = new URL(apiUrl);
-            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-            connection.setRequestMethod("GET");
+            JsonObject jsonObject = getApiResponse(apiUrl);
 
-            try (BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()))) {
-                StringBuilder responseBuilder = new StringBuilder();
-                String line;
-                while ((line = reader.readLine()) != null) {
-                    responseBuilder.append(line);
-                }
+            JsonObject rates = jsonObject.getAsJsonObject("data");
 
-                // Parse the response using Jakarta JSON
-                JsonObject responseJson = (JsonObject) Json.createReader(new StringReader(responseBuilder.toString())).readObject();
+            double from = rates.get(fromCurrency).getAsDouble();
+            double to = rates.get(toCurrency).getAsDouble();
+            double result = fromValue * (from / to);
+            System.out.println("result"+result);
+            request.setAttribute("result", result);
+            request.getRequestDispatcher("index.jsp").forward(request, response);
 
-                // Get the conversion rate
-                double conversionRate = responseJson.getJsonObject("data").getJsonNumber(toCurrency).doubleValue();
+            String name = request.getParameter("name");
+            String nationality = request.getParameter("nationality");
+            String phoneNumber = request.getParameter("phoneNumber");
 
-                // Perform the conversion
-                double convertedAmount = amountToConvert * conversionRate;
+//           saveConversionDetails(name, nationality, phoneNumber, fromValue, fromCurrency, toCurrency, result);
 
-                // Send the converted amount as a response
-                response.setContentType("text/html");
-                try (PrintWriter out = response.getWriter()) {
-                    out.println("<html><body>");
-                    out.println("<h2>Conversion Result:</h2>");
-                    out.println("<p>Conversion Rate: " + conversionRate + "</p>");
-                    out.println("<p>Converted Amount: " + convertedAmount + "</p>");
-                    out.println("</body></html>");
-                }
-            } finally {
+        } finally {
+            if (connection != null) {
                 connection.disconnect();
             }
-        } catch (Exception e) {
-            // Handle exceptions (e.g., network issues, API errors)
-            response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Error processing the request");
         }
     }
+
+    private JsonObject getApiResponse(String apiUrl) throws IOException {
+        URL url = new URL(apiUrl);
+        HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+        connection.setRequestMethod("GET");
+
+        try (InputStream stream = connection.getInputStream();
+             InputStreamReader reader = new InputStreamReader(stream);
+             Scanner sc = new Scanner(reader)) {
+
+            StringBuilder responseContent = new StringBuilder();
+            while (sc.hasNext()) {
+                responseContent.append(sc.nextLine());
+            }
+
+            Gson gson = new Gson();
+            return gson.fromJson(responseContent.toString(), JsonObject.class);
+        }
+    }
+
+
 }
+
