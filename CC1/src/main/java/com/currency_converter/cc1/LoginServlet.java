@@ -17,7 +17,7 @@ import java.sql.SQLException;
 public class LoginServlet extends HttpServlet {
     private static final String JDBC_URL = "jdbc:mysql://localhost:3306/company";
     private static final String JDBC_USER = "root";
-    private static final String JDBC_PASSWORD = "root";
+    private static final String JDBC_PASSWORD = "@1234sql#abc";
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -35,9 +35,8 @@ public class LoginServlet extends HttpServlet {
 
     private boolean authenticateUser(String username, String password) {
         try (Connection connection = DriverManager.getConnection(JDBC_URL, JDBC_USER, JDBC_PASSWORD);
-             PreparedStatement preparedStatement = connection.prepareStatement(
-                     "SELECT * FROM users1 WHERE uname = ? AND upd = ?")) {
-
+             PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM users1 WHERE uname = ? AND upd = ?")) {
+            System.out.println(connection);
             preparedStatement.setString(1, username);
             preparedStatement.setString(2, password); // In a real-world scenario, hash the password before comparing
 

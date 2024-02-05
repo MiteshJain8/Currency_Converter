@@ -69,7 +69,6 @@ public class WeatherServlet extends HttpServlet {
                 responseContent.append(scanner.nextLine());
             }
 
-            // System.out.println(responseContent);
             scanner.close();
 
             // Parse the JSON response to extract temperature, date, and humidity

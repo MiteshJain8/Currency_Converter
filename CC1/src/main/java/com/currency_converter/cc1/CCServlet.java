@@ -16,26 +16,12 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.Scanner;
 import com.currency_converter.util.DatabaseUtil;
-
 public class CCServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
-
     public CCServlet() {
         super();
     }
-
-//    public void init() throws ServletException {
-//        super.init();
-//
-//        // Initialize the database on servlet startup
-//        try (Connection connection = DatabaseUtil.getConnection()) {
-//            DatabaseUtil.executeSqlScript("test/users.sql", connection);
-//        } catch (SQLException | IOException e) {
-//            e.printStackTrace(); // Handle exceptions appropriately
-//        }
-//    }
-
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         response.getWriter().append("Served at: ").append(request.getContextPath());
     }
 
@@ -56,7 +42,7 @@ public class CCServlet extends HttpServlet {
 
             double from = rates.get(fromCurrency).getAsDouble();
             double to = rates.get(toCurrency).getAsDouble();
-            double result = fromValue * (to/from);
+            double result = fromValue * (from / to);
             System.out.println("result"+result);
             request.setAttribute("result", result);
             request.getRequestDispatcher("index.jsp").forward(request, response);
@@ -64,9 +50,6 @@ public class CCServlet extends HttpServlet {
             String name = request.getParameter("name");
             String nationality = request.getParameter("nationality");
             String phoneNumber = request.getParameter("phoneNumber");
-
-//           saveConversionDetails(name, nationality, phoneNumber, fromValue, fromCurrency, toCurrency, result);
-
         } finally {
             if (connection != null) {
                 connection.disconnect();
@@ -78,21 +61,15 @@ public class CCServlet extends HttpServlet {
         URL url = new URL(apiUrl);
         HttpURLConnection connection = (HttpURLConnection) url.openConnection();
         connection.setRequestMethod("GET");
-
         try (InputStream stream = connection.getInputStream();
              InputStreamReader reader = new InputStreamReader(stream);
              Scanner sc = new Scanner(reader)) {
-
             StringBuilder responseContent = new StringBuilder();
             while (sc.hasNext()) {
                 responseContent.append(sc.nextLine());
             }
-
             Gson gson = new Gson();
             return gson.fromJson(responseContent.toString(), JsonObject.class);
         }
     }
-
-
 }
-

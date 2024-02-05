@@ -10,7 +10,7 @@ body {
     height: 100vh;
     align-items: center;
     justify-content: center;
-    background: linear-gradient(to right,  #2b40ff,#07121a);
+    background-color: #003fac;
 }
 
 .mainContainer {
@@ -99,6 +99,7 @@ body {
 }
 
 .windDetails .humidityBox {
+
     display: flex;
     font-size: 1rem;
     color: #323232;
