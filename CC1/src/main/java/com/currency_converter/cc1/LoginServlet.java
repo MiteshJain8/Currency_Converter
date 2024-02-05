@@ -26,10 +26,10 @@ public class LoginServlet extends HttpServlet {
 
         if (authenticateUser(username, password)) {
             // Redirect to success page
-            response.sendRedirect("index.jsp");
+            response.sendRedirect("Home.jsp");
         } else {
             // Redirect to failure page
-            response.sendRedirect("signup.jsp");
+            response.sendRedirect("Home.jsp");
         }
     }
 
