@@ -10,11 +10,10 @@ import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 
-@WebServlet("/LoginServlet")
-public class LoginServlet extends HttpServlet {
+@WebServlet("/SignupServlet")
+public class SignupServlet extends HttpServlet {
     private static final String JDBC_URL = "jdbc:mysql://localhost:3306/company";
     private static final String JDBC_USER = "root";
     private static final String JDBC_PASSWORD = "root";
@@ -24,26 +23,25 @@ public class LoginServlet extends HttpServlet {
         String username = request.getParameter("username");
         String password = request.getParameter("password");
 
-        if (authenticateUser(username, password)) {
+        registerUser(username, password);
             // Redirect to success page
             response.sendRedirect("index.jsp");
-        } else {
+
             // Redirect to failure page
-            response.sendRedirect("signup.jsp");
-        }
+
+
     }
 
-    private boolean authenticateUser(String username, String password) {
+    private boolean registerUser(String username, String password) {
         try (Connection connection = DriverManager.getConnection(JDBC_URL, JDBC_USER, JDBC_PASSWORD);
              PreparedStatement preparedStatement = connection.prepareStatement(
-                     "SELECT * FROM users1 WHERE uname = ? AND upd = ?")) {
+                     "INSERT INTO users1 (uname, upd) VALUES (?, ?) ")) {
 
             preparedStatement.setString(1, username);
-            preparedStatement.setString(2, password); // In a real-world scenario, hash the password before comparing
+            preparedStatement.setString(2, password); // In a real-world scenario, hash the password before storing
 
-            try (ResultSet resultSet = preparedStatement.executeQuery()) {
-                return resultSet.next(); // If there is a matching user, authentication succeeds
-            }
+            int rowsAffected = preparedStatement.executeUpdate();
+            return rowsAffected > 0; // If registration is successful, return true
 
         } catch (SQLException e) {
             e.printStackTrace();

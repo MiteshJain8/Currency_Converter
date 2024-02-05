@@ -117,6 +117,6 @@ public class WeatherServlet extends HttpServlet {
         }
 
         // Forward the request to the weather.jsp page for rendering
-        request.getRequestDispatcher("index.jsp").forward(request, response);
+        request.getRequestDispatcher("weather.jsp").forward(request, response);
     }
 }
