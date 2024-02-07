@@ -144,7 +144,9 @@
     </div>
 </div>
 
-<script src="weatherScript.js"></script>
+<script src="weatherScript.js">
+
+</script>
 
 </body>
 

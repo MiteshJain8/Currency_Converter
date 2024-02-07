@@ -16,12 +16,15 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.Scanner;
 import com.currency_converter.util.DatabaseUtil;
+
 public class CCServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
+
     public CCServlet() {
         super();
     }
-        protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         response.getWriter().append("Served at: ").append(request.getContextPath());
     }
 
@@ -47,9 +50,28 @@ public class CCServlet extends HttpServlet {
             request.setAttribute("result", result);
             request.getRequestDispatcher("index.jsp").forward(request, response);
 
-            String name = request.getParameter("name");
-            String nationality = request.getParameter("nationality");
-            String phoneNumber = request.getParameter("phoneNumber");
+            String uname = request.getParameter("uname");
+            String unation = request.getParameter("unation");
+            String uemail = request.getParameter("uemail");
+            String umobile = request.getParameter("umobile");
+            int amount = (int) result;
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            Connection conn = DatabaseUtil.getConnection();
+            String sql = "INSERT INTO currencydb(uname, unation, uemail, umobile, fromcurrency, tocurrency, amount) VALUES (?, ?, ?, ?, ?, ?, ?)";
+            PreparedStatement pstmt = conn.prepareStatement(sql);
+            pstmt.setString(1, uname);
+            pstmt.setString(2, unation);
+            pstmt.setString(3, uemail);
+            pstmt.setString(4, umobile);
+            pstmt.setString(5, fromCurrency);
+            pstmt.setString(6, toCurrency);
+            pstmt.setInt(7, amount);
+            pstmt.executeUpdate();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            throw new RuntimeException(e);
         } finally {
             if (connection != null) {
                 connection.disconnect();
