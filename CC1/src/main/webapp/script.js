@@ -1,23 +1,84 @@
-var weatherIcon = document.getElementById("weather-icon");
+getLocation();
+function getLocation() {
+    if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(showPosition, () => {
+            document.getElementById("body").style.filter = 'blur(0rem)';
+        });
+    }
+}
 
-var val = document.getElementById("wc").value;
-switch (val) {
-    case 'Clouds':
-        weatherIcon.src = "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEiwFTkt5z_dxU6w1UnS1PxiZV3HDiPGsAW5Lrsp09MnlCmkQre9GzO8MnGytaaY1eZoqBN6SMJ4U578_uDtiuXswovr1T3o-Kt5KK0mlN_zC0RDodJFaKHQ3Uk-HIZ3vuMvAKNJi8DDFwWA7F6BOxz78Oh-UePwJTuc3PG0ZIZypPE1xlMPl5z46joaEw/s320/Clouds.png";
-        break;
-    case 'Clear':
-        weatherIcon.src = "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEj7pmzNCftryAfpa1YBSzVeYtjgxDQnw09Ug0HVV47J8GEtHPYTH9hJgZ2M1k0YgE0pcZ1qekr4C14zyPCiVuQAfXLClK8Ww3hYB6v77yElP7Lo5BnUKo4n-w6yB17FAbw51WST6YKS0GMwyA4fYNxOZxEyNL6HhUfFRgVhOW0GyRdBRriMHFQ-qfh4cA/s320/sun.png";
-        break;
-    case 'Rain':
-        weatherIcon.src = "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgDW_NdwvxV796rkFf43qmUDiTQePn5dg7PDfn1SijfpjtB0AWJMBcifU6LWyW7iOtjZhfqIJnKEGQ1PwbbXS7NoKMSAmvy7i2ljWXMYLue3EBIBBR2qTFbs6QCe5eoFr2CU9WzCVJ8u0J3z3eAo3Ajv1LXamZASFtbj9sA_gD-Kp3hfgAk17Xh17RoLQ/s320/rainy.png";
-        break;
-    case 'Mist':
-        weatherIcon.src = "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgVpL23l0t1U_ibWi01TFcHMF6J_t-9Ada5PavGlwG4M_mKIcx0pV1md9SN9ip1d84NaVowml5Do16XO3nsuttnM2-Ov05d-wCjEYjdzaOYfKvijw8k6Hfj9pOiPyEZTp2W20EPbTeONTgJE2Rdxs4KZUfg6f2PmbMF1094NcqJ7DwSFUQwYiRmVCNvuA/s320/mist.png";
-        break;
-    case 'Snow':
-        weatherIcon.src = "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEj-P3iT_uQK95qFY4h7QGdEtbRc1aVQo9BZy0ZWyPBvCNrP-4wnRStw0xYj9e4xa4ZlYISeNZqVJ33UP4YukR4jBennDD_obIN4QxYNZHdzG_z6_MNL2U08wMXwdFhtfvitW5LGiHgrwMJFC8QJFqbSO3woGSBqOdagGxaEQ20_S31Gc-GYL4vYzPzaPw/s320/snow.png";
-        break;
-    case 'Haze':
-        weatherIcon.src = "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjld66Ia5g_hpBn3Impi3zzOBHqWkjQInGLxTb2uXksuCsrkQU8HjlVyLobEJEGg8fRSIxeFzldGEHUmWcaiZBwAcRy4dGDpFX1BjTSB56qmBjW5tEW3RSC9_mCuLU_a8RuXchxGY7Oc8HLLl-IfaDW19Z0ZJJfNae9tECXRIyEu7rmJ3da08z8cI-phw/s320/haze.png";
-        break;
+function showPosition(position) {
+    var latitude = position.coords.latitude;
+    var longitude = position.coords.longitude;
+//     console.log(latitude + " " + longitude);
+    getName(latitude, longitude)
+}
+async function getName(latitude, longitude) {
+    var access_key = 'fc3a65fc9ebd7761b6cd0379e6cb3775'
+    var url = `https://api.openweathermap.org/geo/1.0/reverse?lat=` + latitude + `&lon=` + longitude + `&limit=5&appid=` + access_key;
+    var res = await fetch(url);
+    var data = await res.json();
+    var location = data[0].name.split(" ")[0];
+    fetchData(location);
+    document.getElementById("body").style.filter = 'blur(0rem)';
+}
+
+function findWeather() {
+    var location = document.getElementById("search").value;
+    fetchData(location)
+}
+async function fetchData(location) {
+    var url = `https://api.weatherapi.com/v1/current.json?key=1c63857a8e0548f9a1a152750210909&q=` + location + `&aqi=yes`;
+    var res = await fetch(url);
+    var data = await res.json();
+    if(res.status == 200){
+        setValues(data);
+    }
+    else{
+        var tags = document.getElementsByClassName('reset');
+        for (let index = 0; index < tags.length; index++) {
+            tags.item(index).innerHTML = ""
+        }
+        document.getElementById("name").innerHTML = "Location not Found";
+    }
+}
+function setValues(data) {
+    var setter = document.getElementById("temp_c");
+    setter.innerHTML = data.current.temp_c + `&#176`;
+
+    setter = document.getElementById('name');
+    setter.innerHTML = data.location.name;
+
+    setter = document.getElementById("region");
+    setter.innerHTML = `&nbsp;` +  data.location.region + `, ` + data.location.country;
+    setter = document.getElementById("feelslike_c");
+    setter.innerHTML = `Feels like ` + data.current.feelslike_c + `&#176`;
+
+    setter = document.getElementById("condition");
+    setter.innerHTML = data.current.condition.text;
+
+    setter = document.getElementById("cloud");
+    setter.innerHTML = data.current.cloud + `%`;
+
+    setter = document.getElementById("humidity");
+    setter.innerHTML = data.current.humidity + `%`;
+
+    setter = document.getElementById("wind_kph");
+    setter.innerHTML = data.current.wind_kph + ` Km/h ` + data.current.wind_dir;
+
+    setter = document.getElementById("gust_kph");
+    setter.innerHTML = data.current.gust_kph + ` Km/h`;
+
+    setter = document.getElementById("precip_mm");
+    setter.innerHTML = data.current.precip_mm + `mm`;
+
+    setter = document.getElementById("pressure_mb");
+    setter.innerHTML = data.current.pressure_mb + `mb`;
+
+    setter = document.getElementById("vis_km");
+    setter.innerHTML = data.current.vis_km + ` KM`;
+
+    setter = document.getElementById("uv");
+    setter.innerHTML = data.current.uv + ` `;
+
 }
