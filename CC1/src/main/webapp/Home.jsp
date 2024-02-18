@@ -415,7 +415,7 @@
         <img class="card-img-top" src="logos/weather.png" alt="Card image cap">
         <div class="card-body">
             <h5 class="card-title">Weather Details</h5>
-            <p class="card-text">With precision forecasting technology, you receive real-time updates on temperature, humidity, wind speed, and more, ensuring you're equipped with the most relevant data for your surroundings.  The app's intuitive design makes it easy to access location-based weather details effortlessly. Whether you're planning a weekend getaway or a daily commute, stay informed about current conditions and future forecasts with just a glance.
+            <p class="card-text">With precision forecasting technology, you receive real-time updates on temperature, humidity, wind speed, and more, ensuring you're equipped with the most relevant data for your surroundings.  The app's intuitive design makes it easy to access location-based weather details effortlessly and accurately . Whether you're planning a weekend getaway or a daily commute, stay informed about current conditions and future forecasts with just a glance.
                 The app also tends to provide a seamless experiance in acccordance to get the weather report of a given location.
             </p>
             <a href="weather.jsp" class="btn btn-primary">Go <span class="material-symbols-outlined">

@@ -29,7 +29,7 @@ public class LoginServlet extends HttpServlet {
             response.sendRedirect("Home.jsp");
         } else {
             // Redirect to failure page
-            response.sendRedirect("Home.jsp");
+            response.sendRedirect("login.jsp");
         }
     }
 

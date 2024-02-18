@@ -9,9 +9,9 @@
             href="https://fonts.googleapis.com/css?family=Vollkorn:400,400i,600,700,900&display=swap"
             rel="stylesheet"
     />
-    <link rel="shortcut icon" href="images/hot-air-balloon.ico">
+<%--    <link rel="shortcut icon" href="images/hot-air-balloon.ico">--%>
     <link rel="stylesheet" href="trip.css" />
-    <title>The Road</title>
+    <title>Trip-It</title>
 </head>
 <body>
 <div class="container">
@@ -160,12 +160,7 @@
                             These were the best days of this year
                         </h1>
                         <p class="story-paragraph">
-                            Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                            Architecto quas, repudiandae veritatis nam mollitia cumque
-                            distinctio, quia aperiam aliquid at consequuntur libero
-                            quisquam facilis laborum inventore repellat perspiciatis vel
-                            fugiat molestias recusandae eum necessitatibus quo possimus
-                            aspernatur? Nobis, architecto eaque.
+                            Enveloped within the intricate tapestry of nature's grandeur, forests stand as an epitome of unparalleled beauty. A harmonious symphony of diverse flora and fauna, these verdant realms captivate the senses with their kaleidoscopic hues and enthralling biodiversity. The arboreal expanse unfolds its majesty through the intricate interplay of sunlight filtering through the dense canopy, casting ethereal patterns upon the forest floor.
                         </p>
                     </div>
                 </div>
@@ -182,12 +177,7 @@
                             I enjoyed this great tour
                         </h1>
                         <p class="story-paragraph">
-                            Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                            Architecto quas, repudiandae veritatis nam mollitia cumque
-                            distinctio, quia aperiam aliquid at consequuntur libero
-                            quisquam facilis laborum inventore repellat perspiciatis vel
-                            fugiat molestias recusandae eum necessitatibus quo possimus
-                            aspernatur? Nobis, architecto eaque.
+                            In the embrace of winter's crystalline charm, the world undergoes a transformative metamorphosis, as nature bestows upon the landscape a mantle of ethereal beauty. An austere yet enchanting season, winter summons a mosaic of glistening frost, delicate snowflakes, and the profound stillness that blankets the earth in a serene hush. The atmosphere becomes a tableau of contrasts, where the crisp, frigid air contrasts with the warmth of cozy hearths and the soft glow of candlelit windows
                         </p>
                     </div>
                 </div>
@@ -239,10 +229,10 @@
     <!-- Footer -->
     <footer class="footer">
         <p class="footer-paragraph">
-            CHISOMBIRI &copy; 2022
+            Trip-It &copy; 2022
         </p>
     </footer>
 </div>
-<script src="trip.js"></script>
+h<script src="trip.js"></script>
 </body>
 </html>

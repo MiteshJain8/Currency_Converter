@@ -45,11 +45,10 @@ public class CCServlet extends HttpServlet {
 
             double from = rates.get(fromCurrency).getAsDouble();
             double to = rates.get(toCurrency).getAsDouble();
-            double result = fromValue * (from / to);
+            double result = fromValue * (to/from);
             System.out.println("result"+result);
             request.setAttribute("result", result);
             request.getRequestDispatcher("index.jsp").forward(request, response);
-
             String uname = request.getParameter("uname");
             String unation = request.getParameter("unation");
             String uemail = request.getParameter("uemail");
@@ -78,7 +77,6 @@ public class CCServlet extends HttpServlet {
             }
         }
     }
-
     private JsonObject getApiResponse(String apiUrl) throws IOException {
         URL url = new URL(apiUrl);
         HttpURLConnection connection = (HttpURLConnection) url.openConnection();
